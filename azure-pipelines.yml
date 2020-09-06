@@ -17,7 +17,9 @@ variables:
 
 steps:
 - script: |
-    sudo wget -c https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+    #sudo wget -c https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+    sudo wget -c https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o /tmp/go.tar.gz
+    sudo tar -xz /tmp/go.tar.gz -C /usr/local
     #apt-get install golang
     ls /usr/local/
     go version
