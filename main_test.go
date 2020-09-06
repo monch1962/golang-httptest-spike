@@ -91,7 +91,8 @@ func logResponse(r *http.Response, t *testing.T) {
 	t.Logf("Response body: %s\n", buf)
 }
 
-func examineResponse(r *http.Response,t *testing.T, expectBody string, expectHeaders []RespHeader, expectStatus int) {
+func examineResponse(r *http.Response,t *testing.T, xpectBody interface{}, expectHeaders []RespHeader, expectStatus int) {
+	expectBody := fmt.Sprintf("%s", xpectBody)
 	buf, _ := ioutil.ReadAll(r.Body)
 	if r.StatusCode != expectStatus {
 		t.Fatalf("Expected response code %d, received response code %d\n", expectStatus, r.StatusCode)
@@ -116,7 +117,8 @@ func TestGenerated(t *testing.T) {
 		respBody interface{}
 		respHeaders []RespHeader
     }{
-        {"TestA", "GET", "/posts/1", []ReqHeader{{"abc", "def"}}, 200, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
+		{"TestA", "GET", "/posts/1", []ReqHeader{{"abc", "def"}}, 200, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
+		{"TestB", "GET", "/posts/2", []ReqHeader{{"abc", "def"}}, 201, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
 	}
 
 	baseURL := getBaseURL(t)
@@ -144,13 +146,13 @@ func TestGenerated(t *testing.T) {
 			}
 			logResponse(response, t)
 
-			expectBody := ""
+			//expectBody := ""
 			expectHeaders := []RespHeader{}
 			for _,h := range tt.respHeaders {
 				header := RespHeader{h.Key, h.Value}
 				expectHeaders = append(expectHeaders, header)
 			}
-			examineResponse(response, t, expectBody, tt.respHeaders, tt.status)
+			examineResponse(response, t, tt.respBody, tt.respHeaders, tt.status)
 		})
     }
 }
