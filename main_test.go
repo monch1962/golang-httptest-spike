@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 	"net/http/httputil"
+	//"fmt"
 )
 
 func setTimeouts() (time.Duration, time.Duration, time.Duration) {
@@ -67,53 +68,66 @@ type Header struct {
 	Value []string
 }
 
-/*func containsHeader(arr http.Header, h Header) bool {
-	for _, a := range arr {
-    	if a == h {
+func containsHeader(returnedHeaders http.Header, h Header) bool {
+	for k,v:= range returnedHeaders {
+    	if k == h.Key && v[0] == h.Value[0] {
         	return true
       	}
    	}
-   	return false
-}*/
+	return false
+}
 
-func examineResponse(r *http.Response,t *testing.T, expectBody string, expectHeaders []Header, expectStatus int) {
+func logResponse(r *http.Response, t *testing.T) {
 	t.Logf("Response code: %d\n", r.StatusCode)
 	t.Logf("Response headers: %v\n", r.Header)
 	respHeadersJSON, _ := json.MarshalIndent(r.Header, "", "  ")
 	t.Logf("Response headers (JSON): %v\n", string(respHeadersJSON))
 	buf, _ := ioutil.ReadAll(r.Body)
 	t.Logf("Response body: %s\n", buf)
+}
+
+func examineResponse(r *http.Response,t *testing.T, expectBody string, expectHeaders []Header, expectStatus int) {
+	buf, _ := ioutil.ReadAll(r.Body)
 	if r.StatusCode != expectStatus {
 		t.Fatalf("Expected response code %d, received response code %d\n", expectStatus, r.StatusCode)
 	}
 	if expectBody != "" && string(buf) != expectBody {
 		t.Fatalf("Expected body '%v', received body '%v'\n", expectBody, string(buf))
 	}
-	//for _, h := range expectHeaders {
-		//if !containsHeader(r.Header, h) {
-		//	t.Fatalf("Expected header '%v' not found\n", h)
-		//}
-	//}
+	for _, h := range expectHeaders {
+		if !containsHeader(r.Header, h) {
+			t.Fatalf("Expected header '%v: %v' not found\n", h.Key, h.Value[0])
+		}
+	}
 }
 
 func TestEndpoint(t *testing.T) {
 	baseURL := getBaseURL(t)
 	client := constructHTTPClient(t)
 
-	req, _ := http.NewRequest("GET", baseURL + "/posts/1", nil)
+	endPoint := "/posts/1"
+	verb := "GET"
+
+	req,err := http.NewRequest(verb, baseURL + endPoint, nil)
+	if err != nil {
+		t.Fatalf("Unable to construct request: '%v %v'\n%v\n",verb, baseURL+endPoint, err.Error())
+	}
 
 	req.Header.Set("abc", "123")
+	req.Header.Set("def", "456")
 	logRequest(req, t)
 
 	response,err := client.Do(req)
 	if err != nil {
 		t.Fatalf("%v\n",err.Error())
 	}
+	logResponse(response, t)
 
 	expectStatus := 200
-	expectBody := "blah"
+	expectBody := ""
 	expectHeaders := []Header{}
-	header := Header{"abc", []string{"def"}}
+	//header := Header{"abc", []string{"def"}}
+	header := Header{"Content-Type", []string{"application/json; charset=utf-8"}}
 	expectHeaders = append(expectHeaders, header)
 	examineResponse(response, t, expectBody, expectHeaders, expectStatus)
 }
