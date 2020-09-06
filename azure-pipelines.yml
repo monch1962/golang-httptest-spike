@@ -7,7 +7,7 @@
 #- master
 
 pool:
-  vmImage: 'ubuntu 16.04'
+  vmImage: 'ubuntu-latest'
 
 variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
@@ -17,7 +17,8 @@ variables:
 
 steps:
 - script: |
-    ls /usr/local/go*
+    go version
+    #ls /usr/local/go*
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
     mkdir -p '$(modulePath)'
