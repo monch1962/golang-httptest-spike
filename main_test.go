@@ -92,7 +92,9 @@ func logResponse(r *http.Response, t *testing.T) {
 }
 
 func examineResponse(r *http.Response,t *testing.T, xpectBody interface{}, expectHeaders []RespHeader, expectStatus int) {
-	expectBody := fmt.Sprintf("%s", xpectBody)
+	expectBody, _ := xpectBody.(string)
+	//expectBody := fmt.Sprintf("%s", xpectBody)
+
 	buf, _ := ioutil.ReadAll(r.Body)
 	if r.StatusCode != expectStatus {
 		t.Fatalf("Expected response code %d, received response code %d\n", expectStatus, r.StatusCode)
@@ -146,7 +148,6 @@ func TestGenerated(t *testing.T) {
 			}
 			logResponse(response, t)
 
-			//expectBody := ""
 			expectHeaders := []RespHeader{}
 			for _,h := range tt.respHeaders {
 				header := RespHeader{h.Key, h.Value}
@@ -157,6 +158,7 @@ func TestGenerated(t *testing.T) {
     }
 }
 
+/*
 func TestEndpoint(t *testing.T) {	
 	baseURL := getBaseURL(t)
 	client := constructHTTPClient(t)
@@ -186,3 +188,4 @@ func TestEndpoint(t *testing.T) {
 	expectHeaders = append(expectHeaders, header)
 	examineResponse(response, t, expectBody, expectHeaders, expectStatus)
 }
+*/
