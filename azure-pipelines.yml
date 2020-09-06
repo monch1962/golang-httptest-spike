@@ -39,6 +39,6 @@ steps:
   displayName: 'Get dependencies, then build'
 
 - script: |
-    go test
+    BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 go test
   workingDirectory: '$(modulePath)'
   displayName: 'Run unit tests'
