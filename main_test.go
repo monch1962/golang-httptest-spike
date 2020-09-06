@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 	"net/http/httputil"
-	//"fmt"
+	"fmt"
 )
 
 func setTimeouts() (time.Duration, time.Duration, time.Duration) {
@@ -63,12 +63,17 @@ func getBaseURL(t *testing.T) string {
 	return baseURL
 }
 
-type Header struct {
+type ReqHeader struct {
+	Key string
+	Value string
+}
+
+type RespHeader struct {
 	Key string
 	Value []string
 }
 
-func containsHeader(returnedHeaders http.Header, h Header) bool {
+func containsHeader(returnedHeaders http.Header, h RespHeader) bool {
 	for k,v:= range returnedHeaders {
     	if k == h.Key && v[0] == h.Value[0] {
         	return true
@@ -86,7 +91,7 @@ func logResponse(r *http.Response, t *testing.T) {
 	t.Logf("Response body: %s\n", buf)
 }
 
-func examineResponse(r *http.Response,t *testing.T, expectBody string, expectHeaders []Header, expectStatus int) {
+func examineResponse(r *http.Response,t *testing.T, expectBody string, expectHeaders []RespHeader, expectStatus int) {
 	buf, _ := ioutil.ReadAll(r.Body)
 	if r.StatusCode != expectStatus {
 		t.Fatalf("Expected response code %d, received response code %d\n", expectStatus, r.StatusCode)
@@ -101,7 +106,56 @@ func examineResponse(r *http.Response,t *testing.T, expectBody string, expectHea
 	}
 }
 
-func TestEndpoint(t *testing.T) {
+func TestGenerated(t *testing.T) {
+	var tests = []struct {
+		testName string
+		verb string
+		endPoint string
+		reqHeaders []ReqHeader
+		status int
+		respBody interface{}
+		respHeaders []RespHeader
+    }{
+        {"TestA", "GET", "/posts/1", []ReqHeader{{"abc", "def"}}, 200, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
+	}
+
+	baseURL := getBaseURL(t)
+	// These are shown separately when executing go test -v.
+
+    for _, tt := range tests {
+        testname := fmt.Sprintf("%s", tt.testName)
+        t.Run(testname, func(t *testing.T) {
+
+			client := constructHTTPClient(t)
+
+			req,err := http.NewRequest(tt.verb, baseURL + tt.endPoint, nil)
+			if err != nil {
+				t.Fatalf("Unable to construct request: '%v %v'\n%v\n",tt.verb, baseURL+tt.endPoint, err.Error())
+			}
+
+			for _,h := range tt.reqHeaders {
+				req.Header.Set(h.Key, h.Value)
+			}
+			logRequest(req, t)
+
+			response,err := client.Do(req)
+			if err != nil {
+				t.Fatalf("%v\n",err.Error())
+			}
+			logResponse(response, t)
+
+			expectBody := ""
+			expectHeaders := []RespHeader{}
+			for _,h := range tt.respHeaders {
+				header := RespHeader{h.Key, h.Value}
+				expectHeaders = append(expectHeaders, header)
+			}
+			examineResponse(response, t, expectBody, tt.respHeaders, tt.status)
+		})
+    }
+}
+
+func TestEndpoint(t *testing.T) {	
 	baseURL := getBaseURL(t)
 	client := constructHTTPClient(t)
 
@@ -125,9 +179,8 @@ func TestEndpoint(t *testing.T) {
 
 	expectStatus := 200
 	expectBody := ""
-	expectHeaders := []Header{}
-	//header := Header{"abc", []string{"def"}}
-	header := Header{"Content-Type", []string{"application/json; charset=utf-8"}}
+	expectHeaders := []RespHeader{}
+	header := RespHeader{"Content-Type", []string{"application/json; charset=utf-8"}}
 	expectHeaders = append(expectHeaders, header)
 	examineResponse(response, t, expectBody, expectHeaders, expectStatus)
 }
