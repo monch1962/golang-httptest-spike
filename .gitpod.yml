@@ -1,1 +1,4 @@
 
+tasks:
+  - init: 'echo "TODO: Replace with init/build command"'
+    command: go get -v -t -d ./...
