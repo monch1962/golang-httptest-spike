@@ -26,5 +26,5 @@ steps:
 
 - script: |
     BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 go test
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  workingDirectory: '$(modulePath)'
   displayName: 'Run unit tests'
