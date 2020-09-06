@@ -9,3 +9,13 @@
 `$ go get -u github.com/jstemmer/go-junit-report`
 
 `$ BASE_URL=https://jsonplaceholder.typicode.com go test | go-junit-report`
+
+## To compile tests into a standalone executable file
+
+`$ go test -c -o main_test`
+
+Then
+`$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test -test.v` will run the tests in verbose mode, and `$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test` will run them without verbose mode.
+
+
+`$ BASE_URL=https://jsonplaceholder.typicode.com go ./main_test | go-junit-report`
