@@ -6,6 +6,14 @@
 
 # golang-httptest-spike
 
+Intention is to produce a Go/httptest _template_ that can be used by Pactical (https://github.com/monch1962/pactical) to generate Go test cases from Pacts. My thinking is:
+- Go tests execute particularly quickly, and consume very few hardware resources
+- Go code compiles into very small EXEs with no external dependencies
+- Go code can be cross-compiled for just about any platform
+- it's fairly easy to turn Go code into serverless code that will execute on AWS, Azure, GCP and KNative platforms
+
+Combine all these features, and you get a particularly flexible API testing framework that's suitable for many different test platforms. It'd be very nice to have a single framework that can execute on just about any infrastructure.
+
 ## To output JUnit format
 
 `$ go get -u github.com/jstemmer/go-junit-report`
@@ -22,6 +30,3 @@ Then
 Finally, to generate Junit reports from a compiled test file, 
 
 `$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test -test.v | go-junit-report`
-
-
-`$ BASE_URL=https://jsonplaceholder.typicode.com go ./main_test | go-junit-report`
