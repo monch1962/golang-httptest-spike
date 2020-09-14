@@ -114,20 +114,21 @@ func TestGenerated(t *testing.T) {
 		testName string
 		verb string
 		endPoint string
+		reqBody string
 		reqHeaders []ReqHeader
 		status int
 		respBody interface{}
 		respHeaders []RespHeader
     }{
-		{"TestA", "GET", "/posts/1", []ReqHeader{{"abc", "def"}}, 200, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
-		{"TestB", "GET", "/posts/2", []ReqHeader{{"abc", "def"}}, 201, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
+		{"TestA", "GET", "/posts/1", "", []ReqHeader{{"abc", "def"}}, 200, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
+		{"TestB", "GET", "/posts/2", "", []ReqHeader{{"abc", "def"}}, 201, "", []RespHeader{{"Content-Type",[]string{"application/json; charset=utf-8"}}}},
 	}
 
 	baseURL := getBaseURL(t)
 	// These are shown separately when executing go test -v.
 
-    for _, tt := range tests {
-        testname := fmt.Sprintf("%s", tt.testName)
+    for testNo, tt := range tests {
+        testname := fmt.Sprintf("%d - %s", testNo, tt.testName)
         t.Run(testname, func(t *testing.T) {
 
 			client := constructHTTPClient(t)

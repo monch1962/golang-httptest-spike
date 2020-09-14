@@ -10,7 +10,7 @@
 
 `$ go get -u github.com/jstemmer/go-junit-report`
 
-`$ BASE_URL=https://jsonplaceholder.typicode.com go test | go-junit-report`
+`$ BASE_URL=https://jsonplaceholder.typicode.com go test -v 2>&1 | go-junit-report`
 
 ## To compile tests into a standalone executable file
 
