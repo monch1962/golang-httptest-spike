@@ -19,5 +19,9 @@
 Then
 `$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test -test.v` will run the tests in verbose mode, and `$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test` will run them without verbose mode.
 
+Finally, to generate Junit reports from a compiled test file, 
+
+`$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test -test.v | go-junit-report`
+
 
 `$ BASE_URL=https://jsonplaceholder.typicode.com go ./main_test | go-junit-report`
