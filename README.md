@@ -7,17 +7,21 @@
 # golang-httptest-spike
 
 Intention is to produce a Go/httptest _template_ that can be used by Pactical (https://github.com/monch1962/pactical) to generate Go test cases from Pacts. My thinking is:
-- Go tests execute particularly quickly, and consume very few hardware resources
-- Go code compiles into very small EXEs with no external dependencies
-- Go code can be cross-compiled for just about any platform
-- it's fairly easy to turn Go code into serverless code that will execute on AWS, Azure, GCP and KNative platforms
+- Go tests execute particularly quickly, and consume very few hardware resources when running
+- Go code quickly compiles into very small EXEs with no external dependencies
+- Go code can be cross-compiled for just about any platform so e.g. tests can be compiled on Windows laptops and run on Linux
+- it's fairly easy to turn Go code into code that will execute on serverless platforms such as AWS, Azure, GCP and KNative
+- API tests should include the capability to support various timeout checks (http, ssl exchange, tcp), so they can be repurposed for negative test scenarios. This template includes that capability
+- test execution should be configurable at _runtime_; specifically endpoints, timeouts & verbosity shouldn't be written into test code
+- collections of tests, compiled into standalone EXEs, can potentially be reused for monitoring purposes for validating that test environments are functioning properly
+- API test code should be created on-the-fly from contracts and available environment test data, not written and supported by humans 
 
 Combine all these features, and you get a particularly flexible API testing framework that's suitable for many different test platforms. It'd be very nice to have a single framework that can execute with zero dependencies on just about any infrastructure.
 
 
 ## Simplest case
 
-To run without compiling and get test results in Go test format:
+To run tests without compiling and get test results in Go test format:
 
 `$ BASE_URL=https://jsonplaceholder.typicode.com go test`
 
