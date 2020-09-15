@@ -1,7 +1,5 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/monch1962/golang-httptest-spike)
-
 [![Build Status](https://dev.azure.com/monch1962/monch1962/_apis/build/status/monch1962.golang-httptest-spike?branchName=master)](https://dev.azure.com/monch1962/monch1962/_build/latest?definitionId=10&branchName=master)
-
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=monch1962_golang-httptest-spike&metric=alert_status)](https://sonarcloud.io/dashboard?id=monch1962_golang-httptest-spike)
 
 # golang-httptest-spike
@@ -10,9 +8,10 @@ Intention is to produce a Go/httptest _template_ that can be used by Pactical (h
 - Go tests execute particularly quickly, and consume very few hardware resources when running
 - Go code quickly compiles into very small EXEs with no external dependencies
 - Go code can be cross-compiled for just about any platform so e.g. tests can be compiled on Windows laptops and run on Linux
-- it's fairly easy to turn Go code into code that will execute on serverless platforms such as AWS, Azure, GCP and KNative
+- it's fairly easy to write Go code that will execute on serverless platforms such as AWS, Azure, GCP and KNative
+- it should be possible to run multiple tests concurrently, and Go makes that particularly easy to implement
 - API tests should include the capability to support various timeout checks (http, ssl exchange, tcp), so they can be repurposed for negative test scenarios. This template includes that capability
-- test execution should be configurable at _runtime_; specifically endpoints, timeouts & verbosity shouldn't be written into test code
+- test execution should be configurable at _runtime_; specifically endpoints, timeouts, execution concurrency & verbosity shouldn't be written into test code
 - collections of tests, compiled into standalone EXEs, can potentially be reused for monitoring purposes for validating that test environments are functioning properly
 - API test code should be created on-the-fly from contracts and available environment test data, not written and supported by humans 
 
