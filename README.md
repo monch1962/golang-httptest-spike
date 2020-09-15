@@ -18,6 +18,15 @@ Intention is to produce a Go/httptest _template_ that can be used by Pactical (h
 
 Combine all these features, and you get a particularly flexible API testing framework that's suitable for many different test platforms. It'd be very nice to have a single framework that can execute with zero dependencies on just about any infrastructure.
 
+## Environment variables
+
+This tool can be configured at runtime via the following environment variables:
+- CONCURRENCY: allows you to specify how many tests should be allowed to execute concurrently (default: 1)
+- HTTP_TIMEOUT: allows you to specify the maximum number of milliseconds to wait for an http response before failing test execution (default: 30000)
+- TCP_CONNECT_TIMEOUT: allows you to specify the maximum number of milliseconds to wait for a TCP connection before failing test execution (default: 30000)
+- TLS_CONNECT_TIMEOUT: allows you to specify the maximum number of milliseconds to wait for TLS handshake before failing test execution (default: 30000)
+
+CONCURRENCY is particularly useful for speeding up execution of multiple test cases when testing with long timeout durations
 
 ## Simplest case
 

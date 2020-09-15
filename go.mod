@@ -2,4 +2,4 @@ module main.go
 
 go 1.15
 
-require github.com/jstemmer/go-junit-report v0.9.1 // indirect
+require github.com/remeh/sizedwaitgroup v1.0.0
