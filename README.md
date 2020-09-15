@@ -12,7 +12,14 @@ Intention is to produce a Go/httptest _template_ that can be used by Pactical (h
 - Go code can be cross-compiled for just about any platform
 - it's fairly easy to turn Go code into serverless code that will execute on AWS, Azure, GCP and KNative platforms
 
-Combine all these features, and you get a particularly flexible API testing framework that's suitable for many different test platforms. It'd be very nice to have a single framework that can execute on just about any infrastructure.
+Combine all these features, and you get a particularly flexible API testing framework that's suitable for many different test platforms. It'd be very nice to have a single framework that can execute with zero dependencies on just about any infrastructure.
+
+
+## Simplest case
+
+To run without compiling and get test results in Go test format:
+
+`$ BASE_URL=https://jsonplaceholder.typicode.com go test`
 
 ## To output JUnit format
 
@@ -24,7 +31,8 @@ Combine all these features, and you get a particularly flexible API testing fram
 
 `$ go test -c -o main_test`
 
-Then
+will compile all the tests into a standalone EXE called `main_test`, which can be moved and executed on other hardware
+
 `$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test -test.v` will run the tests in verbose mode, and `$ BASE_URL=https://jsonplaceholder.typicode.com HTTP_TIMEOUT=1000 ./main_test` will run them without verbose mode.
 
 Finally, to generate Junit reports from a compiled test file, 
