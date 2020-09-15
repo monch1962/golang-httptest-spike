@@ -21,12 +21,15 @@ Combine all these features, and you get a particularly flexible API testing fram
 ## Environment variables
 
 This tool can be configured at runtime via the following environment variables:
-- CONCURRENCY: allows you to specify how many tests should be allowed to execute concurrently (default: 1)
-- HTTP_TIMEOUT: allows you to specify the maximum number of milliseconds to wait for an http response before failing test execution (default: 30000)
-- TCP_CONNECT_TIMEOUT: allows you to specify the maximum number of milliseconds to wait for a TCP connection before failing test execution (default: 30000)
-- TLS_CONNECT_TIMEOUT: allows you to specify the maximum number of milliseconds to wait for TLS handshake before failing test execution (default: 30000)
+- *BASE_URL*: allows you to set the base URL of the system being tested (required, no default value)
+- *CONCURRENCY*: allows you to specify how many tests should be allowed to execute concurrently (optional, default: 1)
+- *HTTP_TIMEOUT*: allows you to specify the maximum number of milliseconds to wait for an http response before failing test execution (optional, default: 30000)
+- *TCP_CONNECT_TIMEOUT*: allows you to specify the maximum number of milliseconds to wait for a TCP connection before failing test execution (optional, default: 30000)
+- *TLS_CONNECT_TIMEOUT*: allows you to specify the maximum number of milliseconds to wait for TLS handshake before failing test execution (optional, default: 30000)
 
-CONCURRENCY is particularly useful for speeding up execution of multiple test cases when testing with long timeout durations
+Note that *BASE_URL* is required - tests will not execute if this value is not supplied.
+
+*CONCURRENCY* is particularly useful for speeding up execution of multiple test cases when testing with long timeout durations
 
 ## Simplest case
 
