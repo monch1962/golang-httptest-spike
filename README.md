@@ -7,6 +7,7 @@
 Intention is to produce a Go/httptest _template_ that can be used by Pactical (https://github.com/monch1962/pactical) to generate Go test cases from Pacts. My thinking is:
 - Go tests execute particularly quickly, and consume very few hardware resources when running
 - Go code quickly compiles into very small EXEs with no external dependencies
+- EXEs produced by Go can be trivially wrapped inside containers
 - Go code can be cross-compiled for just about any platform so e.g. tests can be compiled on Windows laptops and run on Linux
 - it's fairly easy to write Go code that will execute on serverless platforms such as AWS, Azure, GCP and KNative
 - it should be possible to run multiple tests concurrently, and Go makes that particularly easy to implement
